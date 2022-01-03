@@ -15,7 +15,7 @@ Pin assignments
 ---------------
 
 * PS/2 Data: D1
-* PS/2 Clock: D2
+* PS/2 Clock: D2 (must be a pin that supports interrupts)
 * Interrupt: D3 (pulses low to signal an interrupt)
 * Shift register clock: D4 (assumes a '595 shift register with clocks tied together)
 * Shift register data: D5
