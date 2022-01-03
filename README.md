@@ -1,7 +1,15 @@
-Arduino Keyboard Controller
-===========================
+Arduino Keyboard Controller (read-only)
+=======================================
 
-Arduino Uno based PS/2 keyboard controller for my homebrew CPU.
+Lightweight, read-only version of Arduino Uno based PS/2 keyboard controller
+for my homebrew CPU.
+
+The heavyweight, read-write version (https://github.com/skaven81/keyboard_controller)
+has proven to be troublesome to integrate due to timing issues.  This read-only
+version is meant to integrate with shift registers instead of having the CPU
+read/write the microcontroller directly.  This eliminates the timing issues, but
+at the cost of not being able to perform writes to the controller and therefore
+not having the ability to have the CPU configure the controller's behavior.
 
 Pin assignments
 ---------------
