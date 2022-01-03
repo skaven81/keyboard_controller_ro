@@ -30,9 +30,10 @@ void setup() {
     Serial.begin(115200);
 
     // initialize the interrupt pin as high.  A low pulse
-    // triggers the interrupt /S/R latch
-    pinMode(CPU_INT_PIN, OUTPUT);
+    // triggers the interrupt /S/R latch, so make sure the
+    // pin is high before we switch it to output.
     digitalWrite(CPU_INT_PIN, HIGH);
+    pinMode(CPU_INT_PIN, OUTPUT);
 
     // initialize the shift register pins into a known state
     pinMode(SHIFT_DATA_PIN, OUTPUT);
@@ -50,13 +51,6 @@ void setup() {
     //  true - but only because it never powered down.
     diagnostics.reset();
 #endif
-
-    // Enable numlock by default
-    numlock_on = true;
-    capslock_on = false;
-    scrolllock_on = false;
-    current_leds = ps2::KeyboardLeds::numLock;
-    ps2Keyboard.sendLedStatus(current_leds);
 
     // Switch to PS2 mode (scancode set 3) so we have more control
     // over the keyboard behavior
@@ -90,11 +84,14 @@ void setup() {
     ps2Keyboard.sendLedStatus(ps2::KeyboardLeds::none);
     delay(250);
 
-
     // initialize numlock on, capslock off -- note that the keyboard
     // itself doesn't know or care what mode it's in, we have to track
     // this ourselves.
-    ps2Keyboard.sendLedStatus(ps2::KeyboardLeds::numLock);
+    numlock_on = true;
+    capslock_on = false;
+    scrolllock_on = false;
+    current_leds = ps2::KeyboardLeds::numLock;
+    ps2Keyboard.sendLedStatus(current_leds);
 
 #if DEBUG
     Serial.println("Ready");
@@ -110,12 +107,10 @@ void loop() {
     // Wait for a complete keypress (or release) and then break out of the loop so we
     // can send the keypress (or release) to the 595 shift registers.
 
-    // We don't count every scancode event as a "keypress". For example, numlock and
-    // capslock events don't count as a "keypress".  Modifier keys are not counted as
-    // keypresses unless CONFIG_INTSPECIAL is set.  We exit the do {} loop when a complete
-    // keypress has been registered (whether make or break).  It's up to the logic outside
-    // the loop to decide what to do with the keypress (e.g. whether or not to raise an
-    // interrupt, how to manage the key event buffer, etc.
+    // We don't count every scancode event as a "keypress". For example,
+    // numlock and capslock events don't count as a "keypress".  Modifier keys
+    // are not counted as keypresses.  We exit the do {} loop when a complete
+    // keypress has been registered (whether make or break).
     do {
         scanCode = ps2Keyboard.readScanCode();
         if(scanCode == ps2::KeyboardOutput::garbled) {
