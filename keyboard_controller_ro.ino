@@ -447,6 +447,15 @@ void loop() {
     // we only send make events.  But if sending break events would be useful,
     // just comment out the if() block so both types are sent.
     if((current_keyflags & KEYFLAG_MAKEBREAK) > 0) {
+#if DEBUG
+        Serial.write("Sending to shift registers: flags:[0b");
+        for(uint8_t mask = 0x80; mask >= 0x01; mask=mask>>1)
+            Serial.print(current_keyflags & mask ? "1" : "0");
+        Serial.write("] key:[0b");
+        for(uint8_t mask = 0x80; mask >= 0x01; mask=mask>>1)
+            Serial.print(current_key & mask ? "1" : "0");
+        Serial.println("]");
+#endif
         shiftOut(SHIFT_DATA_PIN, SHIFT_CLOCK_PIN, LSBFIRST, (uint8_t)current_key);
         shiftOut(SHIFT_DATA_PIN, SHIFT_CLOCK_PIN, LSBFIRST, current_keyflags);
         // Since we have the shift clock and latch clock tied together, the

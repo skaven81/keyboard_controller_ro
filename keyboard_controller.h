@@ -10,7 +10,7 @@
 #define KEYFLAG_FUNCTION    0x40
 
 // CPU interrupt -- pull low to signal an interrupt to the CPU
-#define CPU_INT_PIN 3
+#define CPU_INT_PIN 6
 
 // Shift register pins
 #define SHIFT_CLOCK_PIN 4
@@ -19,12 +19,12 @@
 // PS/2 Port
 // Pin 2 must be used for the PS2 clock because it allows interrupts.
 #define PS2_CLOCK_PIN 2
-#define PS2_DATA_PIN 1
+#define PS2_DATA_PIN 3
 
 // DEBUG 0: no serial debugging output
 // DEBUG 1: Just the captured events
 // DEBUG 2: Everything
-#define DEBUG 0
+#define DEBUG 1
 
 const char scancode_to_ascii[] PROGMEM = {
         '\0', // [00] unused
