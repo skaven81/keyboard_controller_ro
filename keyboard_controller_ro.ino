@@ -27,7 +27,9 @@ bool capslock_on;
 bool scrolllock_on;
 
 void setup() {
+#if DEBUG
     Serial.begin(115200);
+#endif
 
     // initialize the interrupt pin as high.  A low pulse
     // triggers the interrupt /S/R latch, so make sure the
